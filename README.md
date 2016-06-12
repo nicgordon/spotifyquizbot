@@ -1,4 +1,4 @@
-## Spotify game bot
+## Spotify Quiz Bot
 
 A bot which will referee a game of "who can guess the song the fastest". Run it on a computer that is also running spotify and you're good to go!
 
