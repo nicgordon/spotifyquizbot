@@ -31,8 +31,8 @@ export default class Song {
     this.title = spotifyTrackPayload.name;
     this.album = spotifyTrackPayload.album;
 
-    this.comparisonArtist = english.removeDiacritics(this.artist).replace(/-/g, ' ').toLowerCase();
-    this.comparisonTitle = english.removeDiacritics(this.title).replace(/-/g, ' ').toLowerCase();
+    this.comparableArtist = english.removeDiacritics(this.artist).replace(/-/g, ' ').toLowerCase();
+    this.comparableTitle = english.removeDiacritics(this.title).replace(/-/g, ' ').toLowerCase();
 
     this.artistGuessed = false;
     this.titleGuessed = false;
@@ -60,9 +60,9 @@ export default class Song {
     // update the artist result
     if (!this.artistGuessed) {
       for (let i = 0, len = guessParts.length; i < len; i++) {
-        console.log(`"${guessParts[i]}" vs. "${this.comparisonArtist}" = ${natural.JaroWinklerDistance(this.comparisonArtist, guessParts[i])}`);
+        console.log(`"${guessParts[i]}" vs. "${this.comparableArtist}" = ${natural.JaroWinklerDistance(this.comparableArtist, guessParts[i])}`);
 
-        if (natural.JaroWinklerDistance(this.comparisonArtist, guessParts[i]) >= MIN_GUESS_ACCURACY) {
+        if (natural.JaroWinklerDistance(this.comparableArtist, guessParts[i]) >= MIN_GUESS_ACCURACY) {
           this.artistGuessed = true;
           result.artist = GUESS_RESULT.CORRECT;
           guessParts.splice(i, 1);
@@ -82,9 +82,9 @@ export default class Song {
     // update the title result
     if (!this.titleGuessed) {
       for (let i = 0, len = guessParts.length; i < len; i++) {
-        console.log(`"${guessParts[i]}" vs. "${this.comparisonTitle}" = ${natural.JaroWinklerDistance(this.comparisonTitle, guessParts[i])}`);
+        console.log(`"${guessParts[i]}" vs. "${this.comparableTitle}" = ${natural.JaroWinklerDistance(this.comparableTitle, guessParts[i])}`);
 
-        if (natural.JaroWinklerDistance(this.comparisonTitle, guessParts[i]) >= MIN_GUESS_ACCURACY) {
+        if (natural.JaroWinklerDistance(this.comparableTitle, guessParts[i]) >= MIN_GUESS_ACCURACY) {
           this.titleGuessed = true;
           result.title = GUESS_RESULT.CORRECT;
           guessParts.splice(i, 1);
