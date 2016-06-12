@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import english from './lib/english';
 import Botkit from 'botkit';
 
 import setup from '../setup';
@@ -125,15 +126,8 @@ controller.hears(['end','finish'], 'direct_message,direct_mention,mention', (bot
   const winningScore = Math.max(...scores.map((score) => score.score));
   const winners = scores.filter((score) => score.score === winningScore);
 
-  // Credit to http://stackoverflow.com/a/28248573 for this handy function
-  function toSentence(arr) {
-    return arr.slice(0, -2).join(', ') + 
-      (arr.slice(0, -2).length ? ', ' : '') + 
-      arr.slice(-2).join(', and ');
-  }
-
   let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''}
-  Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${toSentence(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
+  Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toOxfordCommaSentence(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
 
   ${getScoresOutput(scores)}`;
 
