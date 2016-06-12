@@ -11,7 +11,7 @@
     <key>ProgramArguments</key>
     <array>
       <string>/usr/local/bin/node</string>
-      <string>spotifybot.js</string>
+      <string>index.js</string>
     </array>
 
     <key>StandardOutPath</key>
