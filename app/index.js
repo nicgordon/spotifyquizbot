@@ -127,7 +127,7 @@ controller.hears(['end','finish'], 'direct_message,direct_mention,mention', (bot
   const winners = scores.filter((score) => score.score === winningScore);
 
   let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''}
-  Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toOxfordCommaSentence(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
+  Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toList(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
 
   ${getScoresOutput(scores)}`;
 

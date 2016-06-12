@@ -99,7 +99,7 @@ export default {
 
   // Turns an array of strings into a comma separated list with an "and" before the last item
   // Credit to http://stackoverflow.com/a/28248573 for this handy function
-  toOxfordCommaSentence: (arr) => {
+  toList: (arr) => {
     return arr.slice(0, -2).join(', ') + 
       (arr.slice(0, -2).length ? ', ' : '') + 
       arr.slice(-2).join(', and ');
