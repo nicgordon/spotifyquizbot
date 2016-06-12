@@ -1,3 +1,9 @@
+/**
+ *
+ * NOTE: This file is not used for this project, it is just used as a reference
+ * 
+ */
+
 "use strict";
 
 let setup = require('./bot_setup.js');
