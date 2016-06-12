@@ -1,6 +1,6 @@
-## Spotify bot
+## Spotify game bot
 
-A very small script to control Spotify (on a Mac) from Slack, using a bot.
+A bot which will referee a game of "who can guess the song the fastest". Run it on a computer that is also running spotify and you're good to go!
 
 ### Setup
 
@@ -12,12 +12,11 @@ Name your bot "Spotify" or whatever you like. Copy the key Slack gives you.
 
 #### Configure your bot
 
-Create a file named `bot_setup.js` and populate it with:
+Create a file named `setup.js` and populate it with:
 
 ```javascript
-module.exports = {
+export default {
   token: 'your slack bot token here',
-  channel: 'channel name (no #)' // optional, for posting track updates
 };
 ```
 
@@ -27,7 +26,7 @@ module.exports = {
 
 #### Boot up your new bot
 
-    node spotifybot.js
+    npm start
 
 In Slack, invite the bot to a channel (`/invite @bot_name`) and now you can talk to it.
 
@@ -47,11 +46,6 @@ the **full path** of your bot's directory, e.g.
 Install the launchAgent by copying it to the required location:
 
     cp spotifybot.launchagent.plist ~/Library/LaunchAgents/
-
-If you care about logging (and who doesn't), create two empty logfiles, owned by you:
-
-    sudo touch /var/log/spotify.slackbot.out.log /var/log/spotify.slackbot.err.log
-    sudo chown `whoami` /var/log/spotify.slackbot.out.log /var/log/spotify.slackbot.err.log
 
 Finally, launch your background service for the first time (it will now auto-start upon login)
 
