@@ -126,7 +126,7 @@ controller.hears(['end','finish'], 'direct_message,direct_mention,mention', (bot
   const winningScore = Math.max(...scores.map((score) => score.score));
   const winners = scores.filter((score) => score.score === winningScore);
 
-  let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''}
+  let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''} :tada:
   Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toList(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
 
   ${getScoresOutput(scores)}`;
