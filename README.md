@@ -6,7 +6,7 @@ A bot which will referee a game of "who can guess the song the fastest". Run it 
 
 #### Create your bot
 
-Log into Slack website, and then [https://my.slack.com/services/new/bot](create your own bot).
+Log into Slack website, and then [create your own bot](https://my.slack.com/services/new/bot).
 
 Name your bot "spotbot" or whatever you like. Copy the key Slack gives you.
 
