@@ -34,20 +34,26 @@ bot.api.users.list({}, (err, response) => {
 });
 
 // Help
-controller.hears(['^help$'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['help'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('Received help message');
 
-  bot.reply(message, `Can you guess the spotify tune faster than your mates?
-  For each new song that comes on there are 2 points up for grabs: 1 for being the first to correctly identify the artist and 1 for the song title.
-  To make a guess just start your message with a ">", you don't need to notify me directly.
-  You can guess artist and title separately or at the same time separated by a "-".
-  
-  Here are some things you can tell me to do:
-   - *_start_* or *_begin_* the game - e.g. _hey @spotbot, start the game already!_
-   - *_check_* the *_score_* - e.g. _what's the score @spotbot?_
-   - *_finish_* or *_end_* the game - e.g. _@spotbot: finish the game._
+  bot.reply(message, `*_Can you guess the track currently playing on Spotify faster than your mates?_*
+For each new song that comes on there are 2 points up for grabs: 1 for being the first to correctly identify the artist and 1 for the song title.
+To make a guess just start your message with a ">", you don't need to notify me directly.
+You can guess artist and title separately or at the same time separated by a "-".
 
-   Have fun!`);
+I'll add reactions to messages in certain situtations:
+ - :art: means you got the point for guessing the *_artist_* of the current song
+ - :musical_note: means you got the point for guessing the *_title_* of the current song
+ - :x: means it was all wrong
+ - No reaction normally means someone else beat you to it!
+
+Here are some things you can tell me to do:
+ - *_start_* or *_begin_* the game - e.g. _hey @spotbot, start the game already!_
+ - *_check_* the *_score_* - e.g. _what's the score @spotbot?_
+ - *_finish_* or *_end_* the game - e.g. _@spotbot: finish the game._
+
+Have fun!`);
 });
 
 // Respond to greetings just for the lols
@@ -127,7 +133,7 @@ controller.hears(['end','finish'], 'direct_message,direct_mention,mention', (bot
   const winners = scores.filter((score) => score.score === winningScore);
 
   let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''} :tada:
-  Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toList(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
+Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toList(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
 
   ${getScoresOutput(scores)}`;
 
