@@ -19,6 +19,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.9.0",
     "botkit": "^0.2.0",
+    "lodash": "^4.13.1",
     "natural": "^0.4.0",
     "spotify-node-applescript": "^1.0.0"
   }
