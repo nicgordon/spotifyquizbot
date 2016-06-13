@@ -12,7 +12,7 @@ Name your bot "spotbot" or whatever you like. Copy the key Slack gives you.
 
 #### Configure your bot
 
-Create a file named `setup.js` and populate it with:
+Create a file named `setup.js` in the root of the project and populate it with:
 
 ```javascript
 export default {
@@ -41,7 +41,7 @@ here is a LaunchAgent.
 
 First, edit `spotifybot.launchagent.plist` and change `BOT_HOME` to
 the **full path** of your bot's directory, e.g.
-`/Users/jm3/code/spotifyslackbot` or the like.
+`/Users/nicgordon/code/spotifyquizbot` or the like.
 
 Install the launchAgent by copying it to the required location:
 
