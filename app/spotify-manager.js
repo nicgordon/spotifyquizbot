@@ -32,7 +32,7 @@ class SpotifyManager {
         console.log('Returned song from Spotify');
 
         if (!track) {
-          reject(new Error('Could not retrieve track details'));
+          return reject(new Error('Could not retrieve track details'));
         }
 
         // Check if the song is in the recent songs list
