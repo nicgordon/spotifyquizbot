@@ -17,6 +17,7 @@ class SpotifyManager {
 
   getCurrentSong() {
     if (this.currentSong && this.currentSong.identified >= Date.now() - CURRENT_SONG_CACHE_LIFETIME) {
+      console.log('Returned song from cache');
       return Promise.resolve(this.currentSong.song);
     }
 
@@ -28,6 +29,7 @@ class SpotifyManager {
         if (err) {
           reject(err);
         }
+        console.log('Returned song from Spotify');
 
         if (!track) {
           reject(new Error('Could not retrieve track details'));
