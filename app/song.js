@@ -13,6 +13,7 @@
 //   album_artist: 'Bob Dylan',
 //   spotify_url: 'spotify:track:3AhXZa8sUQht0UEdBJgpGc' }
 // }
+import _ from 'lodash';
 import english from './lib/english';
 import natural from 'natural';
 
@@ -24,6 +25,12 @@ export const GUESS_RESULT = {
 
 const MIN_GUESS_ACCURACY = 0.9;
 
+function generateBaseComparableString(original) {
+  return english.removeDiacritics(original).replace(/\s\s+/g, ' ').toLowerCase();
+  // Remove the removal of hyphens for now
+  // .replace(/-/g, ' ')
+}
+
 export default class Song {
   constructor(spotifyTrackPayload) {
     this.id = spotifyTrackPayload.id;
@@ -31,11 +38,37 @@ export default class Song {
     this.title = spotifyTrackPayload.name;
     this.album = spotifyTrackPayload.album;
 
-    this.comparableArtist = english.removeDiacritics(this.artist).replace(/-/g, ' ').toLowerCase();
-    this.comparableTitle = english.removeDiacritics(this.title).replace(/-/g, ' ').toLowerCase();
-
     this.artistGuessed = false;
     this.titleGuessed = false;
+
+    this.comparableArtists = this.generateComparableArtists();
+    this.comparableTitles = this.generateComparableTitles();
+  }
+
+  generateComparableArtists() {
+    const comparableArtists = [
+      generateBaseComparableString(this.artist),
+    ];
+
+    // To add some leniency, allow people to guess artists with or without the preceding "the"
+    comparableArtists.push(comparableArtists[0].replace(/^the /, ''));
+
+    return _.uniq(comparableArtists);
+  }
+
+  generateComparableTitles() {
+    const comparableTitles = [
+      generateBaseComparableString(this.title),
+    ];
+
+    comparableTitles.push(comparableTitles[0]
+      .replace(/(\(.*\))/g, '')             // Remove any content in brackets
+      .replace(/ -.*$/, '')                 // Remove any content after a " -"
+      .replace(/\b(ft\.?|feat\.?)\b.*/, '') // Remove any featured artists
+      .trim()
+    );
+
+    return _.uniq(comparableTitles);
   }
 
   verifyGuess(attempt) {
@@ -60,12 +93,19 @@ export default class Song {
     // update the artist result
     if (!this.artistGuessed) {
       for (let i = 0, len = guessParts.length; i < len; i++) {
-        console.log(`"${guessParts[i]}" vs. "${this.comparableArtist}" = ${natural.JaroWinklerDistance(this.comparableArtist, guessParts[i])}`);
+        this.comparableArtists.some((comparableArtist) => {
+          console.log(`"${guessParts[i]}" vs. "${comparableArtist}" = ${natural.JaroWinklerDistance(comparableArtist, guessParts[i])}`);
 
-        if (natural.JaroWinklerDistance(this.comparableArtist, guessParts[i]) >= MIN_GUESS_ACCURACY) {
-          this.artistGuessed = true;
-          result.artist = GUESS_RESULT.CORRECT;
-          guessParts.splice(i, 1);
+          if (natural.JaroWinklerDistance(comparableArtist, guessParts[i]) >= MIN_GUESS_ACCURACY) {
+            this.artistGuessed = true;
+            result.artist = GUESS_RESULT.CORRECT;
+            guessParts.splice(i, 1);
+          }
+
+          return this.artistGuessed;
+        });
+
+        if (this.artistGuessed) {
           break;
         }
       }
@@ -82,12 +122,19 @@ export default class Song {
     // update the title result
     if (!this.titleGuessed) {
       for (let i = 0, len = guessParts.length; i < len; i++) {
-        console.log(`"${guessParts[i]}" vs. "${this.comparableTitle}" = ${natural.JaroWinklerDistance(this.comparableTitle, guessParts[i])}`);
+        this.comparableTitles.some((comparableTitle) => {
+          console.log(`"${guessParts[i]}" vs. "${comparableTitle}" = ${natural.JaroWinklerDistance(comparableTitle, guessParts[i])}`);
 
-        if (natural.JaroWinklerDistance(this.comparableTitle, guessParts[i]) >= MIN_GUESS_ACCURACY) {
-          this.titleGuessed = true;
-          result.title = GUESS_RESULT.CORRECT;
-          guessParts.splice(i, 1);
+          if (natural.JaroWinklerDistance(comparableTitle, guessParts[i]) >= MIN_GUESS_ACCURACY) {
+            this.titleGuessed = true;
+            result.title = GUESS_RESULT.CORRECT;
+            guessParts.splice(i, 1);
+          }
+
+          return this.titleGuessed;
+        });
+
+        if (this.titleGuessed) {
           break;
         }
       }
