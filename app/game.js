@@ -5,6 +5,7 @@ import { bot } from './index';
 import spotifyManager from './spotify-manager';
 
 import { GUESS_RESULT } from './song';
+const SONG_CLUE_DELAY = 30000;
 
 export default class Game {
   constructor(channel) {
@@ -15,6 +16,16 @@ export default class Game {
 
     // Scores is a collection of objects which have a Player and a score
     this.scores = [];
+
+    // Give clues
+    this.nextClue = null;
+    spotifyManager.on('newSong', (song) => {
+      if (song.duration > 30) {
+        this.nextClue = setTimeout(() => {
+          this.giveClue(song);
+        }, SONG_CLUE_DELAY);
+      }
+    });
   }
 
   addScore(player, score) {
@@ -33,6 +44,20 @@ export default class Game {
 
   getScores() {
     return this.scores;
+  }
+
+  giveClue(song) {
+    function redactItem(item) {
+      return item.replace(/\B\w/g, '_');
+    }
+
+    const artistClue = song.artistGuessed ? song.artist : redactItem(song.artist);
+    const titleClue = song.titleGuessed ? song.title : redactItem(song.title);
+
+    bot.say({
+      text: `Okay, here's a clue: \`${artistClue} - ${titleClue}\``,
+      channel: this.channel,
+    });
   }
 
   initGuessQueue() {
@@ -58,6 +83,11 @@ export default class Game {
 
           this.addScore(guess.player, score);
           callback();
+
+          // Cancel queued clue if song has been identified
+          if (song.artistGuessed && song.titleGuessed) {
+            clearTimeout(this.nextClue);
+          }
 
           // Add reactions after the queue has moved on
           if (result.artist === GUESS_RESULT.CORRECT || result.title === GUESS_RESULT.CORRECT) {

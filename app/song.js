@@ -36,6 +36,7 @@ export default class Song {
     this.id = spotifyTrackPayload.id;
     this.artist = spotifyTrackPayload.artist;
     this.title = spotifyTrackPayload.name;
+    this.duration = spotifyTrackPayload.duration;
     this.album = spotifyTrackPayload.album;
 
     this.artistGuessed = false;

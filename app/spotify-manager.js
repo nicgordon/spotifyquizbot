@@ -1,12 +1,15 @@
 import _ from 'lodash';
+import EventEmitter from 'events';
 import Spotify from 'spotify-node-applescript';
 
 import Song from './song';
 
 const CURRENT_SONG_CACHE_LIFETIME = 5000;
 
-class SpotifyManager {
+class SpotifyManager extends EventEmitter {
   constructor() {
+    super();
+
     this.currentSong = null;
 
     // A collection of recent songs played are stored so that we can ascertain if they have 
@@ -25,7 +28,7 @@ class SpotifyManager {
     const recentSongs = this.recentSongs;
 
     const promise = new Promise((resolve, reject) => {
-      Spotify.getTrack(function(err, track){
+      Spotify.getTrack((err, track) => {
         if (err) {
           reject(err);
         }
@@ -50,6 +53,7 @@ class SpotifyManager {
           recentSongs.pop();
         }
 
+        this.emit('newSong', song);
         resolve(song);
       });
     })
