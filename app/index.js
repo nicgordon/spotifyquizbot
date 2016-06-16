@@ -34,7 +34,7 @@ bot.api.users.list({}, (err, response) => {
 });
 
 // Help
-controller.hears(['help'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['\\b(help)\\b'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('Received help message');
 
   bot.reply(message, `*_Can you guess the track currently playing on Spotify faster than your mates?_*
@@ -57,7 +57,7 @@ Have fun!`);
 });
 
 // Respond to greetings just for the lols
-controller.hears(['hello','hi'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['\\bhello\\b','\\bhi\\b'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('Received hello message');
 
   bot.api.reactions.add({
@@ -96,7 +96,7 @@ function getScoresOutput(scores) {
 }
 
 // Begin a game in the current channel
-controller.hears(['start','begin'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['\\bstart\\b','\\bbegin\\b'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('Received start game message');
 
   const game = _.find(games, { channel: message.channel });
@@ -111,7 +111,7 @@ controller.hears(['start','begin'], 'direct_message,direct_mention,mention', (bo
 });
 
 // Finish the game running in the current channel
-controller.hears(['end','finish'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['\\bend\\b','\\bfinish\\b'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('received end game message');
 
   const game = _.find(games, { channel: message.channel });
@@ -141,7 +141,7 @@ Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toLis
 });
 
 // Check the scores of the game running in the current channel
-controller.hears(['check', 'score'], 'direct_message,direct_mention,mention', (bot, message) => {
+controller.hears(['\\bcheck\\b', '\\bscores?\\b'], 'direct_message,direct_mention,mention', (bot, message) => {
   console.log('Received check scores message');
 
   const game = _.find(games, { channel: message.channel });
