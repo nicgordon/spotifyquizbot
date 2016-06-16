@@ -51,21 +51,26 @@ export default class Game {
           console.log('Song detected as', song.artist, song.title);
 
           const result = song.verifyGuess(guess.message.text);
-          const score = (result.artist === GUESS_RESULT.CORRECT ? 1 : 0) + (result.title === GUESS_RESULT.CORRECT ? 1 : 0);
+          let score = (result.artist === GUESS_RESULT.CORRECT ? 1 : 0) + (result.title === GUESS_RESULT.CORRECT ? 1 : 0);
+          
+          // If the guess got both right in a single guess then award a bonus point
+          score = score === 2 ? 3 : score;
+
           this.addScore(guess.player, score);
           callback();
 
           // Add reactions after the queue has moved on
           if (result.artist === GUESS_RESULT.CORRECT || result.title === GUESS_RESULT.CORRECT) {
-            // I felt like the tick wasn't necessary
-            // addReaction(guess.message, 'white_check_mark');
-
             if (result.artist === GUESS_RESULT.CORRECT) {
               addReaction(guess.message, 'art');
             }
 
             if (result.title === GUESS_RESULT.CORRECT) {
               addReaction(guess.message, 'musical_note');
+            }
+
+            if (result.artist === GUESS_RESULT.CORRECT && result.title === GUESS_RESULT.CORRECT) {
+              addReaction(guess.message, 'clap');
             }
           } else if (result.artist === GUESS_RESULT.INCORRECT || result.title === GUESS_RESULT.INCORRECT) {
             addReaction(guess.message, 'x');

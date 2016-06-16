@@ -41,6 +41,7 @@ controller.hears(['\\b(help)\\b'], 'direct_message,direct_mention,mention', (bot
 For each new song that comes on there are 2 points up for grabs: 1 for being the first to correctly identify the artist and 1 for the song title.
 To make a guess just start your message with a ">", you don't need to notify me directly.
 You can guess artist and title separately or at the same time separated by a "-".
+If you _do_ manage to guess both artist and title in a single guess I'll throw in an bonus point!
 
 I'll add reactions to messages in certain situtations:
  - :art: means you got the point for guessing the *_artist_* of the current song
