@@ -135,7 +135,7 @@ controller.hears(['\\bend\\b','\\bfinish\\b'], 'direct_message,direct_mention,me
   let output = `The game is over! ${(winners.length > 1) ? 'It\'s a tie!!' : ''} :tada:
 Congratulations to our winner${(winners.length > 1) ? 's' : ''}: ${english.toList(winners.map((score) => `<@${score.player.id}|${score.player.username}>`))} :trophy:
 
-  ${getScoresOutput(scores)}`;
+${getScoresOutput(scores)}`;
 
   bot.reply(message, output);
 });
